@@ -21,21 +21,16 @@ void bfs(vvii &LA, int origem) {
 	while(!fila.empty()) {
 
 		int u = fila.front();
-		cout << u << ":";
 		fila.pop();
 
 		for (int i = 0; i < LA[u].size(); i++) {
 
 			int v = LA[u][i].first;
-			cout << v;
 			if (visitados[v] == false) {
-				cout << "]";
 				visitados[v] = true;
 				fila.push(v);
 			}
-			cout << ",";
 		}
-		cout << endl;
 	}
 	
 }
