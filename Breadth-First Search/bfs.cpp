@@ -4,30 +4,33 @@
 
 using namespace std;
 
-typedef pair<int, int> ii;
-typedef vector<int> vi;
-typedef vector<ii> vii;
-typedef vector<vii> vvii; // vetor de vetor de pares
+typedef vector<int> vi; // vetor de inteiros
+typedef vector<vi> vvi; // vetor de vetor de inteiros
 
-void bfs(vvii &LA, int origem) {
+void bfs(vvi &G, int s) {
 
-	int n = LA.size();
-	vector<bool> visitados(n, false);
-	queue<int> fila;
+	int N = G.size();
+	vector<bool> visitados(N, false); // indica se um vértice já foi visitado
+	queue<int> fila; // fila de vértices a serem visitados
 
-	visitados[origem] = true;
-	fila.push(origem);
+	visitados[s] = true;
+	
+	// ENQUEUE(Q, s)
+	fila.push(s); // enfileirar (inserir no final) o vértice s
 
+	// while Q ≠ ∅
 	while(!fila.empty()) {
-
+		
+		// u = DEQUEUE(Q)
 		int u = fila.front();
-		fila.pop();
+		fila.pop(); // // desenfileirar (remover do início) o vértice
 
-		for (int i = 0; i < LA[u].size(); i++) {
+		for (int i = 0; i < G[u].size(); i++) { // percorre a lista de adjacência do vértice atual (u)
 
-			int v = LA[u][i].first;
-			if (visitados[v] == false) {
+			int v = G[u][i];
+			if (!visitados[v]) {
 				visitados[v] = true;
+				// ENQUEUE(Q, v)
 				fila.push(v);
 			}
 		}
@@ -36,22 +39,23 @@ void bfs(vvii &LA, int origem) {
 }
 
 int main() {
-	int n; // quantidade de vértices
-	int m; // quantidade de arestas
+	int N; // quantidade de vértices
+	int M; // quantidade de arestas
 
-	cin >> n >> m;
+	cin >> N >> M;
 
-	vvii LA = vvii(n, vii()); // lista de adjacência do grafo
+	vvi G = vvi(N, vi()); // lista de adjacência do grafo não ponderado
 
-	for(int k = 0; k < m; k++) {		
-		int u, v, w; // aresta saindo do vértice u e alcançando v com peso w
-		cin >> u >> v >> w;
-		LA[u].push_back(ii(v, w));
+	for(int k = 0; k < M; k++) {		
+		int u, v;
+		cin >> u >> v;
+		// aresta saindo do vértice u e alcançando v
+		G[u].push_back(v); // insere o vértice v na lista de adjacência do vértice u
 	}
 
-    int origem; // ponto de partida
-    cin >> origem;
-    bfs(LA, origem);
+    int s; // ponto de partida (source)
+    cin >> s;
+    bfs(G, s);
 	
 	return 0;
 }
